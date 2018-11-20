@@ -17,19 +17,23 @@ namespace ConfigurationPrinter.UnitTests
         {
             services.Configure<TestOptions>(x => { });
 
-            services.PrintOptions(x => { x.MaskedProperties = new List<string>
+            services.PrintOptions(x =>
             {
-                nameof(TestOptions.Password)
-            }; });
+                x.IgnoreMicrosoftOptions = true;
+                x.MaxOptionsLength = 1000;
+                x.MaskedProperties = new List<string>
+                {
+                    nameof(TestOptions.Password)
+                };
+            });
         }
     }
 
     public class TestOptions
     {
+        public string Password = "super_secret_password";
         public string One { get; set; } = "One";
 
         public int Two { get; set; } = 2;
-
-        public string Password = "super_secret_password";
     }
 }
