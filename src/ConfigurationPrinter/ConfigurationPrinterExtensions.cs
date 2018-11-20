@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -37,18 +38,22 @@ namespace Nomailme.ConfigurationPrinter
             };
             foreach (ServiceDescriptor service in services)
             {
-                if (CheckIfIsOption(service.ServiceType))
+                if (!CheckIfIsOption(service.ServiceType))
                 {
-                    Type typeInQuestion = service.ServiceType;
+                    continue;
+                }
 
-                    if (ShouldSkipMicrosoftConfiguration(typeInQuestion, configuration))
-                    {
-                        continue;
-                    }
+                Type typeInQuestion = service.ServiceType;
 
-                    Type configuredOptionsType = typeof(IOptions<>).MakeGenericType(typeInQuestion.GetGenericArguments().First());
+                if (ShouldSkipThisConfiguration(typeInQuestion, configuration))
+                {
+                    continue;
+                }
+
+                Type configuredOptionsType = typeof(IOptions<>).MakeGenericType(typeInQuestion.GetGenericArguments().First());
+                try
+                {
                     object configuredOptions = serviceProvider.GetService(configuredOptionsType);
-
                     object value = GetOptionsValue(configuredOptions);
 
                     string result = JsonConvert.SerializeObject(value, settings);
@@ -58,7 +63,15 @@ namespace Nomailme.ConfigurationPrinter
                         continue;
                     }
 
-                    logger.LogInformation(result);
+                    var builder = new StringBuilder();
+                    builder.AppendLine(typeInQuestion.Name);
+                    builder.Append(result);
+
+                    logger.LogInformation(builder.ToString());
+                }
+                catch (Exception)
+                {
+                    logger.LogWarning($"Unable to print type {typeInQuestion.Name}");
                 }
             }
 
@@ -84,7 +97,7 @@ namespace Nomailme.ConfigurationPrinter
             return property.GetValue(configuredOptions);
         }
 
-        private static bool ShouldSkipMicrosoftConfiguration(Type type, ConfigurationPrinterOptions configuration)
+        private static bool ShouldSkipThisConfiguration(Type type, ConfigurationPrinterOptions configuration)
         {
             if (configuration.IgnoreMicrosoftOptions == false)
             {
