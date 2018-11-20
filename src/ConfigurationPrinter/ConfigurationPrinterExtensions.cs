@@ -50,7 +50,8 @@ namespace Nomailme.ConfigurationPrinter
                     continue;
                 }
 
-                Type configuredOptionsType = typeof(IOptions<>).MakeGenericType(typeInQuestion.GetGenericArguments().First());
+                Type registeredType = typeInQuestion.GetGenericArguments().First();
+                Type configuredOptionsType = typeof(IOptions<>).MakeGenericType(registeredType);
                 try
                 {
                     object configuredOptions = serviceProvider.GetService(configuredOptionsType);
@@ -64,7 +65,7 @@ namespace Nomailme.ConfigurationPrinter
                     }
 
                     var builder = new StringBuilder();
-                    builder.AppendLine(typeInQuestion.Name);
+                    builder.AppendLine($"{registeredType.Name} ({registeredType.FullName})");
                     builder.Append(result);
 
                     logger.LogInformation(builder.ToString());
