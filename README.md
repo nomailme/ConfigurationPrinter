@@ -13,3 +13,17 @@ Let us register it
 
 Now, during application startup following will be printed in the output
 ![Output](https://github.com/nomailme/ConfigurationPrinter/blob/master/docs/assets/log_output.png)
+
+# Usage
+
+To print all registered configurations call the extension method at the end `ConfigureServices` method in your startup.
+
+`services.PrintOptions(x =>
+            {
+                x.IgnoreMicrosoftOptions = true;
+                x.MaxOptionsLength = 1000;
+                x.MaskedProperties = new List<string>
+                {
+                    nameof(TestOptions.Password)
+                };
+            });`
