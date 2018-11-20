@@ -16,7 +16,7 @@ Let's say you have simple class that you want to register as `IOptions<TestOptio
 Let us register it
 ![Registration](https://github.com/nomailme/ConfigurationPrinter/blob/master/docs/assets/usage.png)
 
-Now, during application startup following will be printed in the output
+Now, during application startup following will be printed to the registered logger
 ![Output](https://github.com/nomailme/ConfigurationPrinter/blob/master/docs/assets/log_output.png)
 
 # Usage
