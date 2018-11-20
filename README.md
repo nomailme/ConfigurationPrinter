@@ -21,7 +21,7 @@ Now, during application startup following will be printed in the output
 
 # Usage
 
-To print all registered configurations call the extension method at the end `ConfigureServices` method in your startup.
+To print all registered configurations call the extension method at the ***___end___*** `ConfigureServices` method in your startup.
 ```csharp
 services.PrintOptions(x =>
             {
