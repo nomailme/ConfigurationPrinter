@@ -17,8 +17,8 @@ Now, during application startup following will be printed in the output
 # Usage
 
 To print all registered configurations call the extension method at the end `ConfigureServices` method in your startup.
-
-`services.PrintOptions(x =>
+```csharp
+services.PrintOptions(x =>
             {
                 x.IgnoreMicrosoftOptions = true;
                 x.MaxOptionsLength = 1000;
@@ -26,4 +26,5 @@ To print all registered configurations call the extension method at the end `Con
                 {
                     nameof(TestOptions.Password)
                 };
-            });`
+            });
+```
