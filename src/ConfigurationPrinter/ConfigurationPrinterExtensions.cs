@@ -34,7 +34,8 @@ namespace Nomailme.ConfigurationPrinter
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 MaxDepth = 10,
                 StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
-                Formatting = Formatting.Indented
+                Formatting = Formatting.Indented,
+                ContractResolver = new MaskingContractResolver(configuration.MaskedProperties) 
             };
             foreach (ServiceDescriptor service in services)
             {
@@ -70,9 +71,9 @@ namespace Nomailme.ConfigurationPrinter
 
                     logger.LogInformation(builder.ToString());
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    logger.LogWarning($"Unable to print type {typeInQuestion.Name}");
+                    logger.LogWarning($"Unable to print type {typeInQuestion.Name}{Environment.NewLine}{ex.Message}");
                 }
             }
 

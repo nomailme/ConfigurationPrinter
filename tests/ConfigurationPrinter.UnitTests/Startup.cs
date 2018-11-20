@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,10 @@ namespace ConfigurationPrinter.UnitTests
         {
             services.Configure<TestOptions>(x => { });
 
-            services.PrintOptions(x => { });
+            services.PrintOptions(x => { x.MaskedProperties = new List<string>
+            {
+                nameof(TestOptions.Password)
+            }; });
         }
     }
 
@@ -25,5 +29,7 @@ namespace ConfigurationPrinter.UnitTests
         public string One { get; set; } = "One";
 
         public int Two { get; set; } = 2;
+
+        public string Password = "super_secret_password";
     }
 }

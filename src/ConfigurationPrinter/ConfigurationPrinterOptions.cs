@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 
 namespace Nomailme.ConfigurationPrinter
@@ -15,6 +16,8 @@ namespace Nomailme.ConfigurationPrinter
         /// If set to true, it will print tons of useless info.
         /// </remarks>
         public bool IgnoreMicrosoftOptions { get; set; } = true;
+
+        public List<string> MaskedProperties { get; set; } = new List<string>();
 
         /// <summary>
         /// Skip printing large <see cref="IOptions{TOptions}"/>.
