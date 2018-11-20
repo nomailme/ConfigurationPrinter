@@ -10,6 +10,7 @@
     <RootNamespace>Nomailme.ConfigurationPrinter</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyName>Nomailme.ConfigurationPrinter</AssemblyName>
+    <EnableNuGetPackageRestore>true</EnableNuGetPackageRestore>
   </PropertyGroup>
 
   <ItemGroup>
